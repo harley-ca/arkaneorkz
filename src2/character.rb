@@ -33,7 +33,40 @@ class Character
         puts "Character Level\t|\t#{@level}"
     end
 
+    def save_game
+        #Convert attributes to hash and save to file
+        save = [
+            @name.to_s, @str, @dex, @int, @wrd, @hp, @armor, @ward, @damage, @atk, @level, @exploration, @money
+        ]
 
-
+        saved = ""
+        saves = File.read("saves.txt").gsub("[", "")
+        saves = saves.gsub("]", "").split("\n")
+        puts "Top Save:"
+        puts saves[0]
+        puts "Saving:"
+        puts save
+        gets
+        i = 0
+        while saved != true && i < saves.length
+            line = saves[i].split(",")
+            
+            if line[0].gsub("\"", "") == save[0]
+                saves[i] = save
+                File.write("saves.txt", saves, mode: "w")
+                saved = true
+                puts "Save Successful! Press Enter to continue.."
+                gets
+            end
+            i += 1
+        end
+        if saved != true
+            File.write("saves.txt", "\n", mode: "a")
+            File.write("saves.txt", save.to_s, mode: "a")
+            saved = true
+            puts "New Save Successful! Press Enter to continue.."
+            gets
+        end
+    end
 end
 

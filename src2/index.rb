@@ -4,6 +4,32 @@ require "faker"
 
 $prompt = TTY::Prompt.new
 
+#Shows and returns selection from the main menu
+def main_menu
+    main_selection = $prompt.select("Pick an option:") do |menu|
+        menu.default "Load Game"
+        menu.choice "New Game"
+        menu.choice "Save Game"
+        menu.choice "Load Game"
+        menu.choice "Battle Simulator"
+        menu.choice "Exit"
+    end
+    return main_selection
+end
+
+#Shows and returns selection from the in-game menu
+def game_menu
+    game_selection = $prompt.select("What would you like to do?") do |menu2|
+        menu2.default "Battle"
+        menu2.choice "Explore"
+        menu2.choice "Battle"
+        menu2.choice "Save"
+        menu2.choice "Load"
+        menu2.choice "Exit"
+    end
+    return game_selection
+end
+
 
 def quick_stats(arr)
     puts "Strength\t: #{arr[0]}"
@@ -112,38 +138,6 @@ def create_character(manual, named)
 end
 
 
-#Shows and returns selection from the main menu
-def main_menu
-    main_selection = $prompt.select("Pick an option:") do |menu|
-        menu.default "Load Game"
-        menu.choice "New Game"
-        menu.choice "Load Game"
-        menu.choice "Battle Simulator"
-        menu.choice "Exit"
-    end
-    return main_selection
-end
-
-#Shows and returns selection from the in-game menu
-def game_menu
-    game_selection = $prompt.select("What would you like to do?") do |menu2|
-        menu2.default "Battle"
-        menu2.choice "Explore"
-        menu2.choice "Battle"
-        menu2.choice "Save"
-        menu2.choice "Load"
-        menu2.choice "Exit"
-    end
-    return game_selection
-end
-
-#Saves $player to be retrieved later
-def save_game
-
-
-
-end
-
 #Shows saved games and returns selection to load
 def load_game
     load_selection = $prompt.select("Which file would you like to load?") do |menu3|
@@ -181,6 +175,7 @@ if cmd1 != nil
 end
 
 
+
 #Running the application
 system "clear"
 puts "Welcome to the game! Go forth to adventure!"
@@ -192,6 +187,12 @@ while main_option != "Exit"
     when "New Game"
         create_character(-1, "")
         game_menu
+    when "Save Game"
+        if $player != nil
+            $player.save_game
+        else
+            puts "No game to save, try another option."
+        end
     when "Load Game"
         $player = load_game
         game_menu
