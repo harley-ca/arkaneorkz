@@ -1,8 +1,12 @@
 require_relative("./character.rb")
 require "tty-prompt"
 require "faker"
+require "yaml"
+require "psych"
 
 $prompt = TTY::Prompt.new
+$player = ""
+
 
 #Shows and returns selection from the main menu
 def main_menu
@@ -20,14 +24,34 @@ end
 #Shows and returns selection from the in-game menu
 def game_menu
     game_selection = $prompt.select("What would you like to do?") do |menu2|
-        menu2.default "Battle"
         menu2.choice "Explore"
         menu2.choice "Battle"
-        menu2.choice "Save"
-        menu2.choice "Load"
+        menu2.choice "Save Game"
+        menu2.choice "Load Game"
+        menu2.choice "Battle Simulator"
         menu2.choice "Exit"
     end
-    return game_selection
+    case game_selection
+    when "Explore"
+
+    when "Battle"
+
+    when "Save Game"
+        if $player != nil
+            $player.save_game
+        else
+            puts "No game to save, try another option."
+        end
+    when "Battle Simulator"
+
+    when "Exit"
+
+    end
+end
+
+def yesno
+    yesno = $prompt.select("", %w(No Yes))
+    return yesno
 end
 
 
@@ -82,7 +106,7 @@ def create_character(manual, named)
                 attack = ["rand(1..6)","dex"]
             end
         end
-        $player = Character.new(name, stats[0], stats[1], stats[2], stats[3], stats[4], 11, 11, attack[0], attack[1], 0, 0, 20)
+        $player = Character.new(name, stats[0], stats[1], stats[2], stats[3], stats[4], 11, 11, attack[0], attack[1], 1, 0, 20)
         puts $player.to_s
     elsif manual == 0
         #Quickly autogenerate a character
@@ -123,27 +147,47 @@ def create_character(manual, named)
         else
             name = Faker::Games::DnD.monster
         end
+        stats = [rand(1..8), rand(5..15), rand(5..20)]
+        b = ["str", "dex"]
+        level = manual
 
         #Use the manual parameter to seed the difficulty of the monster
         if manual == 2
-
+            a = "rand(1..8)"
+            hp = stats[3]
         elsif manual >= 10
-
+            a = "rand(5..15)"
+            hp = stats[3]+10
         elsif manual >= 30
-        
+            a = "rand(5..25)"
+            hp = stats[3]+25
         else
-
+            puts "ERROR: ???"
         end
+        Character.new(name, stats[0], stats[0], stats[0], stats[0], hp, rand(8..13), rand(8..13), a, b.sample, level, 0, 20)
     end
 end
 
-
-#Shows saved games and returns selection to load
-def load_game
-    load_selection = $prompt.select("Which file would you like to load?") do |menu3|
-        #Print all current save files
+#Check for parameters, if file is named, automatically load, otherwise list all and ask
+def load_game(load_file)
+    if load_file != ""
+        File.open("./saves.yml") do |file_iter|
+            YAML.load_stream(file_iter) do |line|
+                if line.to_s == load_file
+                    return line
+                end
+            end
+        end
+    else
+        File.open("./saves.yml") do |file_iter|
+            YAML.load_stream(file_iter) do |line|
+                puts line.file_show
+            end
+        end
+        puts "Which file would you like to load?"
+        lf = gets.chomp
+        load_game(lf)
     end
-    return load_selection
 end
 
 #Accept arguments from command line
@@ -194,7 +238,7 @@ while main_option != "Exit"
             puts "No game to save, try another option."
         end
     when "Load Game"
-        $player = load_game
+        load_game("")
         game_menu
     when "Battle Simulator"
         puts $player
@@ -202,7 +246,4 @@ while main_option != "Exit"
         puts "Thanks for playing!"
         next
     end
-    print "Press Enter key to continue..."
-    gets 
-    system "clear"
 end
