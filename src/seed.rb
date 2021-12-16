@@ -1,2 +1,4 @@
-require_relative("./weapon.rb")
+require "faker"
 
+name = Faker::Games::DnD.monster
+puts name

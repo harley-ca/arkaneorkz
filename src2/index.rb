@@ -139,32 +139,6 @@ def create_character(manual, named)
             rand(1..50)
         )
     else
-        #Generate "monster" at the level provided in manual
-
-        #Use name from parameter if provided, otherwise get a random one.
-        if named != ""
-            name = named
-        else
-            name = Faker::Games::DnD.monster
-        end
-        stats = [rand(1..8), rand(5..15), rand(5..20)]
-        b = ["str", "dex"]
-        level = manual
-
-        #Use the manual parameter to seed the difficulty of the monster
-        if manual == 2
-            a = "rand(1..8)"
-            hp = stats[3]
-        elsif manual >= 10
-            a = "rand(5..15)"
-            hp = stats[3]+10
-        elsif manual >= 30
-            a = "rand(5..25)"
-            hp = stats[3]+25
-        else
-            puts "ERROR: ???"
-        end
-        Character.new(name, stats[0], stats[0], stats[0], stats[0], hp, rand(8..13), rand(8..13), a, b.sample, level, 0, 20)
     end
 end
 
@@ -174,7 +148,7 @@ def load_game(load_file)
         File.open("./saves.yml") do |file_iter|
             YAML.load_stream(file_iter) do |line|
                 if line.to_s == load_file
-                    return line
+                    $player = line
                 end
             end
         end
@@ -196,7 +170,11 @@ cmd2 = ARGV[1]
 ARGV.clear
 if cmd1 != nil
     if cmd1 == "load"
-        #Auto load character optio
+        if cmd2 != nil
+            load_game(cmd2)
+        else
+            load_game("")
+        end
     elsif cmd1 == "new"
         if cmd2 != nil
             create_character(-1, cmd2)
@@ -241,7 +219,8 @@ while main_option != "Exit"
         load_game("")
         game_menu
     when "Battle Simulator"
-        puts $player
+        puts $monster_list
+
     else
         puts "Thanks for playing!"
         next
