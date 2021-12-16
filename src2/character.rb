@@ -28,20 +28,19 @@ class Character
     end
 
     def stats
-        puts "Strength\t|\t#{@str}"
-        puts "Dexterity\t|\t#{@dex}"
-        puts "Intelligence\t|\t#{@int}"
-        puts "Weirdness\t|\t#{@wrd}"
-        puts "Hitpoints\t|\t#{@hp}"
-        puts "Armor Value\t|\t#{@armor}"
-        puts "Ward Value\t|\t#{@ward}"
-        puts "Character Level\t|\t#{@level}"
+        puts "Strongth\t|\t#{@str}"
+        puts "Quickz\t|\t#{@dex}"
+        puts "Smartz\t|\t#{@int}"
+        puts "Wackness\t|\t#{@wrd}"
+        puts "Hurtpoints\t|\t#{@hp}"
+        puts "Armoredness\t|\t#{@armor}"
+        puts "Magikked\t|\t#{@ward}"
+        puts "Ork Level\t|\t#{@level}"
     end
 
     def save_game
         file_found = ""
         overwrite = ""
-        puts "Saving the game.."
         save = $player.to_yaml
         File.open("./saves.yml") do |file_iter|
             YAML.load_stream(file_iter) do |line|
@@ -50,12 +49,15 @@ class Character
                     $slot = line
                     puts "Do you want to save over #{line.file_show}"
                     overwrite = yesno
+                    system("clear")
+                    puts "#{@name} waz zaved to da phial."
                 end
             end
         end
         if file_found == true && overwrite == "Yes"
             temp_file = File.read("./saves.yml").gsub($slot.to_yaml, save)
             File.write("./saves.yml", temp_file, mode: "w")
+            puts "#{@name} waz zaved to da phial."
         elsif file_found == true && overwrite == "No"
             print "Please choose a new name: "
             named = gets.chomp
@@ -63,6 +65,7 @@ class Character
             save_game
         else file_found == false
             File.write("./saves.yml", save, mode: "a")
+            puts "#{@name} waz zaved to da phial."
         end
     end
 

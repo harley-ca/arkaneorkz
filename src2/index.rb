@@ -10,43 +10,14 @@ $player = ""
 
 #Shows and returns selection from the main menu
 def main_menu
-    main_selection = $prompt.select("Pick an option:") do |menu|
-        menu.default "Load Game"
-        menu.choice "New Game"
-        menu.choice "Save Game"
-        menu.choice "Load Game"
-        menu.choice "Battle Simulator"
+    main_selection = $prompt.select("Waz iz youz doinz, choom?") do |menu|
+        menu.choice "Battlin' Orkz!"
+        menu.choice "New Ork"
+        menu.choice "Save Ork"
+        menu.choice "Load Ork"
         menu.choice "Exit"
     end
     return main_selection
-end
-
-#Shows and returns selection from the in-game menu
-def game_menu
-    game_selection = $prompt.select("What would you like to do?") do |menu2|
-        menu2.choice "Explore"
-        menu2.choice "Battle"
-        menu2.choice "Save Game"
-        menu2.choice "Load Game"
-        menu2.choice "Battle Simulator"
-        menu2.choice "Exit"
-    end
-    case game_selection
-    when "Explore"
-
-    when "Battle"
-
-    when "Save Game"
-        if $player != nil
-            $player.save_game
-        else
-            puts "No game to save, try another option."
-        end
-    when "Battle Simulator"
-
-    when "Exit"
-
-    end
 end
 
 def yesno
@@ -56,11 +27,11 @@ end
 
 
 def quick_stats(arr)
-    puts "Strength\t: #{arr[0]}"
-    puts "Dexterity\t: #{arr[1]}"
-    puts "Intelligence\t: #{arr[2]}"
-    puts "Weirdness\t: #{arr[3]}"
-    puts "Hitpoints\t: #{arr[4]}"
+    puts "Strongth\t: #{arr[0]}"
+    puts "Quickz\t: #{arr[1]}"
+    puts "Smartz\t: #{arr[2]}"
+    puts "Wackness\t: #{arr[3]}"
+    puts "Hurtpoints\t: #{arr[4]}"
 end
 
 def create_character(manual, named)
@@ -85,25 +56,25 @@ def create_character(manual, named)
             quick_stats(stats)
             confirm_stat = $prompt.select("Are you happy with these stats?", %w(No Yes))
         end
-
+        system("clear")
         #Let player pick a starting weapon and apply it's stats to their character
         weapon = ""
         while weapon == ""
             weapon = $prompt.select("Pick your startin weapon:") do |menu|
-                menu.choice "Sword    | 1d8 | Strength"
-                menu.choice "Spear    | 1d8 | Dexterity"
-                menu.choice "Axe      | 1d6 | Strength"
-                menu.choice "Dagger   | 1d6 | Dexterity"
+                menu.choice "Zword    | 1d8   | Strength"
+                menu.choice "Zpear    | 1d8   | Dexterity"
+                menu.choice "Ax'em    | 1d6+1 | Strength"
+                menu.choice "Stabber  | 1d6+1 | Dexterity"
             end
             case weapon 
-            when "Sword    | 1d8 | Strength"
+            when "Zword    | 1d8   | Strength"
                 attack = ["rand(1..8)","str"]
-            when "Spear    | 1d8 | Dexterity"
+            when "Zpear    | 1d8   | Dexterity"
                 attack = ["rand(1..8)","dex"]
-            when "Axe      | 1d6 | Strength"
-                attack = ["rand(1..6)","str"]
-            when "Dagger   | 1d6 | Dexterity"
-                attack = ["rand(1..6)","dex"]
+            when "Ax'em    | 1d6+1 | Strength"
+                attack = ["rand(1..6)+1","str"]
+            when "Stabber  | 1d6+1 | Dexterity"
+                attack = ["rand(1..6)+1","dex"]
             end
         end
         $player = Character.new(name, stats[0], stats[1], stats[2], stats[3], stats[4], 11, 11, attack[0], attack[1], 1, 0, 20)
@@ -112,7 +83,7 @@ def create_character(manual, named)
         #Quickly autogenerate a character
 
         #Arrays used for weapon selection
-        a = ["rand(1..6","rand(1..8)"]
+        a = ["rand(1..6)+1","rand(1..8)"]
         b = ["str", "dex"]
 
         #Use name from parameter if provided, otherwise get a random one.
@@ -158,9 +129,16 @@ def load_game(load_file)
                 puts line.file_show
             end
         end
-        puts "Which file would you like to load?"
+        puts "Oi! Which Orkz iz you?"
         lf = gets.chomp
-        load_game(lf)
+        if lf.length > 0 
+            load_game(lf)
+            system("clear")
+            puts "#{$player.name} loaded."
+        else
+            system("clear")
+            puts "Try againz when you'ze a real Ork."
+        end
     end
 end
 
@@ -178,49 +156,53 @@ if cmd1 != nil
     elsif cmd1 == "new"
         if cmd2 != nil
             create_character(-1, cmd2)
-            game_menu
         else
             create_character(-1, "")
-            game_menu
         end
     elsif cmd1 == "quick"
         if cmd2 != nil
             create_character(0, cmd2)
-            game_menu
         else
             create_character(0, "")
-            game_menu
         end
     else
-        puts "Woops"
+        puts "Woopzie!"
     end
 end
 
 
 
 #Running the application
-system "clear"
-puts "Welcome to the game! Go forth to adventure!"
 main_option = ""
+system "clear"
+puts "Welcome to Battle Orkz!"
 while main_option != "Exit"
     #Call the main menu and get a selection
     main_option = main_menu
     case main_option
-    when "New Game"
-        create_character(-1, "")
-        game_menu
-    when "Save Game"
-        if $player != nil
-            $player.save_game
-        else
-            puts "No game to save, try another option."
-        end
-    when "Load Game"
-        load_game("")
-        game_menu
-    when "Battle Simulator"
-        puts $monster_list
+    when "Battlin' Orkz!"
+        if $player != nil && $player != ""
 
+        else
+            system("clear")
+            puts "You can't battle Orkz unless you'ze an Ork youzelf. Kapizh?"
+        end
+        #battle
+    when "New Ork"
+        create_character(-1, "")
+        system "clear"
+        puts "#{$player.to_s} created."
+    when "Save Ork"
+        if $player != nil && $player != ""
+            $player.save_game
+            system("clear")
+            puts "#{$player.to_s} waz zaved."
+        else
+            system("clear")
+            puts "What Ork? You ain't no Ork. Try again, Pal."
+        end
+    when "Load Ork"
+        load_game("")
     else
         puts "Thanks for playing!"
         next

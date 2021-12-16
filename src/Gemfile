@@ -1,6 +1,0 @@
-
-source "https://rubygems.org"
-
-gem 'tty-prompt', '~> 0.23.1'
-gem 'faker', '~> 2.19'
-gem 'pastel', '~> 0.8'
