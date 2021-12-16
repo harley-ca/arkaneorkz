@@ -197,8 +197,7 @@ while main_option != "Exit"
         $player = load_game
         game_menu
     when "Battle Simulator"
-        create_character(0, "Mike")
-        puts $player.stats
+        puts $player
     else
         puts "Thanks for playing!"
         next

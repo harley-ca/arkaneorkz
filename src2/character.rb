@@ -40,20 +40,29 @@ class Character
         ]
 
         saved = ""
-        saves = File.read("saves.txt").gsub("[", "")
-        saves = saves.gsub("]", "").split("\n")
+        save_staging = File.read("saves.txt")
+        saves = save_staging.split("\n")
+        puts saves
         puts "Top Save:"
         puts saves[0]
         puts "Saving:"
-        puts save
+        puts save.to_s
         gets
         i = 0
         while saved != true && i < saves.length
             line = saves[i].split(",")
             
-            if line[0].gsub("\"", "") == save[0]
-                saves[i] = save
-                File.write("saves.txt", saves, mode: "w")
+            if line[0].gsub("\"", "") == "[#{save[0]}"
+                puts "THIS IS IMPORTANT"
+                puts line
+                line_split = line.map{ |string| string.gsub("\"", "").gsub("[", "").gsub("]", "") }
+                puts line_split.to_s
+                puts save.to_s
+                gets
+                save_file_split = save_staging.split(line_split).insert(1, save.to_s)
+                save_file_split.each do |i|
+                    File.write("saves.txt", save_file_split[i], mode: "a")
+                end
                 saved = true
                 puts "Save Successful! Press Enter to continue.."
                 gets
