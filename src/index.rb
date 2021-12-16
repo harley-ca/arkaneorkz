@@ -27,16 +27,17 @@ end
 
 
 def quick_stats(arr)
-    puts "Strongth\t: #{arr[0]}"
-    puts "Quickz\t: #{arr[1]}"
-    puts "Smartz\t: #{arr[2]}"
-    puts "Wackness\t: #{arr[3]}"
-    puts "Hurtpoints\t: #{arr[4]}"
+    puts "Strongth\t| #{arr[0]}"
+    puts "Quickz\t\t| #{arr[1]}"
+    puts "Smartz\t\t| #{arr[2]}"
+    puts "Wackness\t| #{arr[3]}"
+    puts "Hurtpoints\t| #{arr[4]}"
 end
 
 def create_character(manual, named)
-    #Manually make the character.
     if manual == -1
+    #Manually make the character.
+
         system("clear")
 
         #Use the name in parameter if relevant, otherwise ask for one.
@@ -80,7 +81,7 @@ def create_character(manual, named)
         $player = Character.new(name, stats[0], stats[1], stats[2], stats[3], stats[4], 11, 11, attack[0], attack[1], 1, 0, 20)
         puts $player.to_s
     elsif manual == 0
-        #Quickly autogenerate a character
+    #Quickly autogenerate a character
 
         #Arrays used for weapon selection
         a = ["rand(1..6)+1","rand(1..8)"]
