@@ -24,7 +24,31 @@ def yesno
     return yesno
 end
 
-def battle(atkr,dfndr)
+def list_saves
+    File.open("./saves.yml") do |file_iter|
+        YAML.load_stream(file_iter) do |line|
+            puts line.file_show
+        end
+    end
+end
+
+def battle(atkr)
+    puts "YOU WISH TO ENTAH DA RING?" # KATY SAYS: Don't let people fight themselves.
+    list_saves                        # Maybe do?
+    load_file = gets.chomp
+    if load_file != ""
+        File.open("./saves.yml") do |file_iter|
+            YAML.load_stream(file_iter) do |line|
+                if line.to_s == load_file
+                    $player = line
+                end
+            end
+        end
+    else
+        system("clear")
+        puts ("Datz no Ork I ever herdz of.")
+        main_menu
+    end
     atkr.hp = atkr.max
     dfndr.hp = dfndr.max
     puts "#{atkr.name} enterz da ring."
@@ -133,6 +157,7 @@ def create_character(manual, named)
             b.sample,
             1,
             2,
+            0,
             hp,
             
         )
@@ -147,24 +172,20 @@ def load_game(load_file)
             YAML.load_stream(file_iter) do |line|
                 if line.to_s == load_file
                     $player = line
+                    puts ("#{$player} waz loaded.")
                 end
             end
         end
     else
-        File.open("./saves.yml") do |file_iter|
-            YAML.load_stream(file_iter) do |line|
-                puts line.file_show
-            end
-        end
+        list_saves
         puts "Oi! Which Orkz iz you?"
         lf = gets.chomp
         if lf.length > 0 
             load_game(lf)
             system("clear")
-            puts "#{$player.name} loaded."
         else
             system("clear")
-            puts "Try againz when you'ze a real Ork."
+            puts "Dun wayztin my time denz!"
         end
     end
 end

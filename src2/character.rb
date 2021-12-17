@@ -25,7 +25,7 @@ class Character
     end
 
     def file_show
-        return "#{@name} | Level: #{@level}"
+        return "#{@name} | Level: #{@level} | XP: #{@exploration}"
     end
 
     def stats
