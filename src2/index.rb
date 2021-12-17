@@ -2,7 +2,6 @@ require_relative("./character.rb")
 require "tty-prompt"
 require "faker"
 require "yaml"
-require "psych"
 
 $prompt = TTY::Prompt.new
 $player = ""
@@ -25,18 +24,44 @@ def yesno
     return yesno
 end
 
+def battle(atkr,dfndr)
+    atkr.hp = atkr.max
+    dfndr.hp = dfndr.max
+    puts "#{atkr.name} enterz da ring."
+    puts "#{dfndr.name} rises to the challenge."
+    puts ""
+    3.times {
+        print "."
+    }
+    puts "BWONNNGGGG! FIGHT!"
+    
+    if rand(1..6) + 2 >= 4
+        atkr.attack(atkr,dfndr)
+    else
+    end
+    while atkr.hp > 0 && dfndr.hp > 0
+        dfndr.attack(dfndr, atkr)
+        atkr.attack(atkr, dfndr)
+    end
+    if $player.xp.remainder(5) == 0
+        $player.improve
+    else 
+    end
+end
+
 
 def quick_stats(arr)
-    puts "Strongth\t: #{arr[0]}"
-    puts "Quickz\t: #{arr[1]}"
-    puts "Smartz\t: #{arr[2]}"
-    puts "Wackness\t: #{arr[3]}"
-    puts "Hurtpoints\t: #{arr[4]}"
+    puts "Strongth\t| #{arr[0]}"
+    puts "Quickz\t\t| #{arr[1]}"
+    puts "Smartz\t\t| #{arr[2]}"
+    puts "Wackness\t| #{arr[3]}"
+    puts "Hurtpoints\t| #{arr[4]}"
 end
 
 def create_character(manual, named)
-    #Manually make the character.
     if manual == -1
+    #Manually make the character.
+
         system("clear")
 
         #Use the name in parameter if relevant, otherwise ask for one.
@@ -77,10 +102,10 @@ def create_character(manual, named)
                 attack = ["rand(1..6)+1","dex"]
             end
         end
-        $player = Character.new(name, stats[0], stats[1], stats[2], stats[3], stats[4], 11, 11, attack[0], attack[1], 1, 0, 20)
+        $player = Character.new(name, stats[0], stats[1], stats[2], stats[3], stats[4], 11, 11, attack[0], attack[1], 1, 0, 20, stats[4])
         puts $player.to_s
     elsif manual == 0
-        #Quickly autogenerate a character
+    #Quickly autogenerate a character
 
         #Arrays used for weapon selection
         a = ["rand(1..6)+1","rand(1..8)"]
@@ -92,7 +117,8 @@ def create_character(manual, named)
         else
             name = Faker::Games::ElderScrolls.name
         end
-        
+
+        hp = rand(1..8) + 2
 
         $player = Character.new(
             name,
@@ -100,14 +126,15 @@ def create_character(manual, named)
             rand(1..6),
             rand(1..6),
             rand(1..6),
-            rand(1..8)+2,
+            hp,
             11,
             11,
             a.sample,
             b.sample,
             1,
             2,
-            rand(1..50)
+            hp,
+            
         )
     else
     end

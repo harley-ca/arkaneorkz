@@ -3,7 +3,7 @@ class Character
     attr_reader :name, :str, :dex, :int, :wrd, :armor, :ward, :damage, :atk, :lvl
     attr_accessor :hp
 
-    def initialize(name, str, dex, int, wrd, hp, armor, ward, damage, atk, level, exploration, money)
+    def initialize(name, str, dex, int, wrd, hp, armor, ward, damage, atk, level, exploration, money, max)
         @name = name
         @str = str
         @dex = dex
@@ -17,6 +17,7 @@ class Character
         @level = level
         @exploration = exploration
         @money = money
+        @max = max
     end
 
     def to_s
@@ -50,7 +51,6 @@ class Character
                     puts "Do you want to save over #{line.file_show}"
                     overwrite = yesno
                     system("clear")
-                    puts "#{@name} waz zaved to da phial."
                 end
             end
         end
@@ -72,11 +72,17 @@ class Character
     def attack(atkr,dfndr)
         if atkr.atk == "dex"
             attack_stat = atkr.dex
+            desc = "#{atkr.name} dashes toward their foe,"
         elsif atkr.atk == "str"
             attack_stat = atkr.str
+            desc = "#{atkr.name} hefts their weapon,"
         end
         if rand(1..20) + attack_stat >= dfndr.armor
-            dfndr.hp -= eval(atkr.damage)
+            dam = eval(atkr.damage)
+            puts "#{desc} connecting with #{dfndr}, dealing #{dam} damage!"
+            dfndr.hp -= dam
+        elsif
+            puts "#{desc} and swings, but #{dfndr.name} dodges to the"
         end
     end
 end
