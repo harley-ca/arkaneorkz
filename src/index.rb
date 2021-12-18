@@ -2,6 +2,8 @@ require_relative("./character.rb")
 require "tty-prompt"
 require "faker"
 require "yaml"
+require "colorize"
+require "terminal-table"
 
 $prompt = TTY::Prompt.new
 $player = ""
@@ -9,7 +11,7 @@ $player = ""
 
 #Shows and returns selection from the main menu
 def main_menu
-    main_selection = $prompt.select("Waz iz youz doinz, choom?") do |menu|
+    main_selection = $prompt.select("Waz iz youz doinz, choom?".colorize(:green)) do |menu|
         menu.choice "Battlin' Orkz!"
         menu.choice "New Ork"
         menu.choice "Save Ork"
@@ -24,52 +26,107 @@ def yesno
     return yesno
 end
 
-def list_saves
-    File.open("./saves.yml") do |file_iter|
-        YAML.load_stream(file_iter) do |line|
-            puts line.file_show
-        end
-    end
+def breakline
+    puts ("")
 end
 
-def battle(atkr)
-    puts "YOU WISH TO ENTAH DA RING?" # KATY SAYS: Don't let people fight themselves.
-    list_saves                        # Maybe do?
+def list_saves
+    rows = []
+    rows.push(["Saved Orkz Here", "Levelz", "EX PEE"])
+    rows.push(:separator)
+    File.open("./saves.yml") do |file_iter|
+        YAML.load_stream(file_iter) do |line|
+            rows.push(line.file_show)
+        end
+    end
+    table = Terminal::Table.new :rows => rows
+    puts table
+end
+
+def battle
+    system("clear")
+    puts "YOU WISH TO ENTAH DA RING?"
+    breakline
+    dfndr = ""
+    list_saves      
+    def_loaded = false
     load_file = gets.chomp
-    if load_file != ""
+    if load_file == $player
+        system("clear")
+        puts "HUH?"
+        main_menu
+    elsif load_file != ""
         File.open("./saves.yml") do |file_iter|
             YAML.load_stream(file_iter) do |line|
                 if line.to_s == load_file
-                    $player = line
+                    dfndr = line
+                    def_loaded = true
                 end
             end
         end
-    else
+    end
+    if def_loaded == true
+        $player.hp = $player.max
+        dfndr.hp = dfndr.max
+        system("clear")
+        puts "#{$player.name} enterz da ring."
+        breakline
+        sleep(0.5)
+        puts "#{dfndr.name} rises to the challenge."
+        breakline
+        sleep(0.5)
+        3.times {
+            print "."
+            sleep(0.4)
+        }
+        breakline
+        print "BWONNNGGGG!".colorize(:brown)
+        puts "   FIGHT!".colorize(:red)
+        breakline
+        sleep(0.5)
+        
+        if rand(1..6) + 2 >= 4
+            $player.attack($player,dfndr)
+        else
+        end
+        while $player.hp > 0 && dfndr.hp > 0
+            breakline
+            sleep(1)
+            dfndr.attack(dfndr, $player)
+            breakline
+            sleep(1)
+            $player.attack($player, dfndr)
+            if $player.hp < $player.max / 2
+                breakline
+                puts "#{$player.name} is looking rough but is ready to keep fighting."
+            elsif dfndr.hp < dfndr.max / 2
+                breakline
+                puts "#{dfndr.name} spits blood onto the ground and grins at #{$player.name} menacingly."
+            end
+        end
+        breakline
+        if $player.hp > 0 
+            winnings = rand(1..15)
+            $player.exploration += 1
+            $player.money += winnings
+            puts "YARR!!!!!!! Great work #{$player}, you'll be Big Cheef in no time!".colorize(:green)
+            sleep(5)
+            system("clear")
+            puts "#{$player} WINZ! $#{winnings} PAIDZ OUT!".colorize(:green)
+        elsif $player.hp == 0 || $player.hp < 0
+            puts "HAR HAR HAR HAR! You gotz zmacked, #{$player}!".colorize(:red)
+            sleep(5)
+            system("clear")
+            puts "YOU LOOZ! Come backz when you fink you can takez #{dfndr.name}".colorize(:red)
+        end
+        if $player.exploration.remainder(5) == 0
+            $player.improve
+        else 
+        end
+    elsif def_loaded != true
         system("clear")
         puts ("Datz no Ork I ever herdz of.")
         main_menu
-    end
-    atkr.hp = atkr.max
-    dfndr.hp = dfndr.max
-    puts "#{atkr.name} enterz da ring."
-    puts "#{dfndr.name} rises to the challenge."
-    puts ""
-    3.times {
-        print "."
-    }
-    puts "BWONNNGGGG! FIGHT!"
-    
-    if rand(1..6) + 2 >= 4
-        atkr.attack(atkr,dfndr)
-    else
-    end
-    while atkr.hp > 0 && dfndr.hp > 0
-        dfndr.attack(dfndr, atkr)
-        atkr.attack(atkr, dfndr)
-    end
-    if $player.xp.remainder(5) == 0
-        $player.improve
-    else 
     end
 end
 
@@ -85,17 +142,17 @@ end
 def create_character(manual, named)
     if manual == -1
     #Manually make the character.
-
+        name = nil
         system("clear")
-
-        #Use the name in parameter if relevant, otherwise ask for one.
-        if named != ""
-            name = named
-        else
-            puts "What is your name?"
-            name = gets.chomp
+        until name != "" && name != nil && name.length < 20
+            #Use the name in parameter if relevant, otherwise ask for one.
+            if named != ""
+                name = named
+            else
+                puts "Whatz is youz name? Not too longz, me no write good."
+                name = gets.chomp
+            end
         end
-
         #Roll stats until player accepts them
         confirm_stat = ""
         while confirm_stat != "Yes"
@@ -172,6 +229,7 @@ def load_game(load_file)
             YAML.load_stream(file_iter) do |line|
                 if line.to_s == load_file
                     $player = line
+                    system("clear")
                     puts ("#{$player} waz loaded.")
                 end
             end
@@ -182,10 +240,10 @@ def load_game(load_file)
         lf = gets.chomp
         if lf.length > 0 
             load_game(lf)
-            system("clear")
         else
             system("clear")
             puts "Dun wayztin my time denz!"
+            main_menu
         end
     end
 end
@@ -230,12 +288,11 @@ while main_option != "Exit"
     case main_option
     when "Battlin' Orkz!"
         if $player != nil && $player != ""
-
+            battle()
         else
             system("clear")
             puts "You can't battle Orkz unless you'ze an Ork youzelf. Kapizh?"
         end
-        #battle
     when "New Ork"
         create_character(-1, "")
         system "clear"

@@ -1,7 +1,7 @@
 class Character
 
-    attr_reader :name, :str, :dex, :int, :wrd, :armor, :ward, :damage, :atk, :lvl
-    attr_accessor :hp
+    attr_reader :name, :str, :dex, :int, :wrd, :armor, :ward, :damage, :atk, :max
+    attr_accessor :hp, :exploration, :money, :level
 
     def initialize(name, str, dex, int, wrd, hp, armor, ward, damage, atk, level, exploration, money, max)
         @name = name
@@ -24,8 +24,12 @@ class Character
         return @name
     end
 
+    def xp
+        return @exploration
+    end
+
     def file_show
-        return "#{@name} | Level: #{@level} | XP: #{@exploration}"
+        return ["#{@name}", "#{@level}", "#{@exploration}"]
     end
 
     def stats
@@ -72,17 +76,52 @@ class Character
     def attack(atkr,dfndr)
         if atkr.atk == "dex"
             attack_stat = atkr.dex
-            desc = "#{atkr.name} dashes toward their foe,"
+            desc = ["deftly", "smoothly", "with great finesse and speed", "in a flash"]
         elsif atkr.atk == "str"
             attack_stat = atkr.str
-            desc = "#{atkr.name} hefts their weapon,"
+            desc = ["wildly", "dangerously", "with much effort and obscene grunting", "with brutal strength"]
         end
         if rand(1..20) + attack_stat >= dfndr.armor
             dam = eval(atkr.damage)
-            puts "#{desc} connecting with #{dfndr}, dealing #{dam} damage!"
-            dfndr.hp -= dam
+            puts "#{atkr.name} advances on #{dfndr} lashing out #{desc.sample}, dealing #{dam} damage!"
+            hurt(dfndr, dam)
         elsif
-            puts "#{desc} and swings, but #{dfndr.name} dodges to the"
+            directions = ["back, putting distance between them", "to the side, looking for an opening", "forward with a feint"]
+            puts "#{atkr} rushes and swings #{desc.sample}, but #{dfndr.name} dodges #{directions.sample}"
         end
+    end
+
+    def improvements
+        possible_improvements = [
+            {}
+            "+1 Quickz",
+            "+1 Smartz",
+            "+1 Wackness",
+            "Really Big Axe",
+            ""
+        ]
+        improvement = $prompt.select("Which blezzing you want?".colorize(:green)) do |menu|
+            menu.choice "Battlin' Orkz!"
+            menu.choice "New Ork"
+            menu.choice "Save Ork"
+            menu.choice "Load Ork"
+            menu.choice "Exit"
+        end
+        return main_selection
+    end
+
+    def improve
+        system("clear")
+        level1 = $player.level + 1
+        $player.level = level1
+        puts "You feel the terrifying maw of Gruumsh smiling down upon you from the heavens.."
+
+
+
+        $player.hp += rand(1..6)
+    end
+
+    def hurt(victim, damage)
+        victim.hp -= damage
     end
 end
