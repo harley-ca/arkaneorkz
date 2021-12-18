@@ -68,6 +68,8 @@ def battle
     if def_loaded == true
         $player.hp = $player.max
         dfndr.hp = dfndr.max
+        halfa = false
+        halfb = true
         system("clear")
         puts "#{$player.name} enterz da ring."
         breakline
@@ -79,6 +81,7 @@ def battle
             print "."
             sleep(0.4)
         }
+        breakline
         breakline
         print "BWONNNGGGG!".colorize(:brown)
         puts "   FIGHT!".colorize(:red)
@@ -96,12 +99,14 @@ def battle
             breakline
             sleep(1)
             $player.attack($player, dfndr)
-            if $player.hp < $player.max / 2
+            if $player.hp < $player.max / 2 && halfa == false
                 breakline
                 puts "#{$player.name} is looking rough but is ready to keep fighting."
-            elsif dfndr.hp < dfndr.max / 2
+                halfa = true
+            elsif dfndr.hp < dfndr.max / 2 && halfb == false
                 breakline
                 puts "#{dfndr.name} spits blood onto the ground and grins at #{$player.name} menacingly."
+                halfb = true
             end
         end
         breakline
@@ -308,8 +313,10 @@ while main_option != "Exit"
         end
     when "Load Ork"
         load_game("")
+    when "READ ME"
+        read_me
     else
-        puts "Thanks for playing!"
+        puts "Zee you in da pit, choom!".colorise(:green)
         next
     end
 end

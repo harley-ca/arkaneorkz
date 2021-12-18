@@ -25,7 +25,7 @@ ward: 11
 damage: rand(1..8)
 atk: dex
 level: 1
-exploration: 0
+exploration: 4
 money: 20
 max: 6
 --- !ruby/object:Character
@@ -40,7 +40,7 @@ ward: 11
 damage: rand(1..8)
 atk: dex
 level: 1
-exploration: 0
+exploration: 9
 money: 20
 max: 9
 --- !ruby/object:Character
@@ -55,6 +55,6 @@ ward: 11
 damage: rand(1..8)
 atk: dex
 level: 1
-exploration: 0
+exploration: 9
 money: 20
 max: 6

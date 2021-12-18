@@ -1,0 +1,11 @@
+source "https://rubygems.org"
+
+git_source(:github) {|repo| "link"}
+
+gem "colorize"
+gem "tty-prompt"
+gem "YAML"
+gem "terminal-table"
+gem "require faker"
+
+gem "rspec"

@@ -1,7 +1,6 @@
 class Character
 
-    attr_reader :name, :str, :dex, :int, :wrd, :armor, :ward, :damage, :atk, :max
-    attr_accessor :hp, :exploration, :money, :level
+    attr_accessor :hp, :exploration, :money, :level, :max,:name, :str, :dex, :int, :wrd, :armor, :ward, :damage, :atk
 
     def initialize(name, str, dex, int, wrd, hp, armor, ward, damage, atk, level, exploration, money, max)
         @name = name
@@ -83,42 +82,77 @@ class Character
         end
         if rand(1..20) + attack_stat >= dfndr.armor
             dam = eval(atkr.damage)
-            puts "#{atkr.name} advances on #{dfndr} lashing out #{desc.sample}, dealing #{dam} damage!"
+            print "#{atkr.name} advances on #{dfndr} lashing out #{desc.sample}, dealing "
+            puts "#{dam} damage!".colorize(:red)
             hurt(dfndr, dam)
         elsif
             directions = ["back, putting distance between them", "to the side, looking for an opening", "forward with a feint"]
-            puts "#{atkr} rushes and swings #{desc.sample}, but #{dfndr.name} dodges #{directions.sample}"
+            print "#{atkr} rushes and swings #{desc.sample}, but #{dfndr.name} "
+            print "dodges".colorize(:green)
+            puts " #{directions.sample}"
         end
     end
 
     def improvements
         possible_improvements = [
-            {}
-            "+1 Quickz",
-            "+1 Smartz",
-            "+1 Wackness",
-            "Really Big Axe",
-            ""
+            {name: "Bigger Musklez (+1 Str)", value: 1},
+            {name: "Da Zoomies (+1 Quick)", value: 2},
+            {name: "Giga Brain (+1 Smart)", value: 3},
+            {name: "Yummy Funny Fungi (+1 Wack)", value: 4},
+            {name: "Really, really, really, BIG club (2d6 Str)", value: 5},
+            {name: "ORK WITH A NINJA SWORD!? (3d4 Dex)", value: 6},
+            {name: "Second Heart (+6 HP)", value: 7},
+            {name: "What some might describe as 'Armor' (Armor 13)", value: 8},
+            {name: "[The True Blessing of Gruumsh] (???)", value: 9},
+            {name: "Déjà vu (???)", value: 10},
         ]
-        improvement = $prompt.select("Which blezzing you want?".colorize(:green)) do |menu|
-            menu.choice "Battlin' Orkz!"
-            menu.choice "New Ork"
-            menu.choice "Save Ork"
-            menu.choice "Load Ork"
-            menu.choice "Exit"
-        end
-        return main_selection
+        list = []
+        3.times { list.push(possible_improvements.sample) }
+        improvement = $prompt.select("Which blezzing you want?".colorize(:green), list)
+        return improvement
     end
 
     def improve
         system("clear")
         level1 = $player.level + 1
         $player.level = level1
-        puts "You feel the terrifying maw of Gruumsh smiling down upon you from the heavens.."
-
-
-
-        $player.hp += rand(1..6)
+        puts "You feel the terrifying maw of Gruumsh smiling down upon you from the heavens..".colorize(:red)
+        breakline
+        choice = improvements
+        case choice
+        when 1
+            $player.str
+        when 2
+            $player.dex += 1
+        when 3
+            $player.int += 1
+        when 4
+            $player.wrd += 1
+        when 5
+            $player.damage = "rand(1..6) + rand(1..6)"
+        when 6
+            $player.damage = "rand(1..4) + (rand1..4) + (rand1..4)"
+        when 7
+            $player.max + 6
+        when 8
+            $player.armor = 13
+        when 9
+            $player.str += 1
+            $player.dex += 1
+            $player.int += 1
+            $player.wrd += 1
+            $player.armor += 1
+            $player.ward += 1
+        when 10
+            $player.exploration += 4
+        end
+        system("clear")
+        $player.max += rand(1..6)
+        puts "Your max HP is now #{$player.max}"
+        breakline
+        puts "Prezz Enter to Continue"
+        gets
+        system("clear")
     end
 
     def hurt(victim, damage)
