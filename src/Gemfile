@@ -4,8 +4,8 @@ git_source(:github) {|repo| "link"}
 
 gem "colorize"
 gem "tty-prompt"
-gem "YAML"
+gem "yaml"
 gem "terminal-table"
-gem "require faker"
+gem "faker"
 
 gem "rspec"
