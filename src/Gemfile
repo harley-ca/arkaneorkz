@@ -1,11 +1,11 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-git_source(:github) {|repo| "link"}
+git_source(:github) { |_repo| 'link' }
 
-gem "colorize"
-gem "tty-prompt"
-gem "yaml"
-gem "terminal-table"
-gem "faker"
+gem 'colorize'
+gem 'faker'
+gem 'terminal-table'
+gem 'tty-prompt'
+gem 'yaml'
 
-gem "rspec"
+gem 'rspec'

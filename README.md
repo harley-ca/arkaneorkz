@@ -5,7 +5,7 @@
 Arkane Orkz is a text-based quasi-multiplayer autobattler made in Ruby and based off of Miscast's "Arcane Ugly" RPG System.
 The purpose of the game is to make an "Ork" and battle other users to improve and eventually take the title of "DA MEANEST"!
 
-Arkane Orkz is available on github here: [link](https://github.com/harley-ca_T1A3_SECOND) 
+Arkane Orkz is available on github here: [link](https://github.com/harley-ca/harley-ca_T1A3_second) 
 
 ---
 
@@ -21,11 +21,17 @@ Arcane Ugly is currently in early release and is available for purchase on their
 
 The Arcane Ugly rulebook is available here: [link](https://miscastterrain.itch.io/arcaneugly)
 
+The Miscast Youtube Channel can be found here: [link](https://www.youtube.com/channel/UCUtsRCYEE-hCPsftezm9wzA)
+
+---
+
 ## User Guide
 
 ### Installation
 
-1. Run the 
+1. Clone from repo to local OR download zip file and unzip
+2. Ensure you have a Unix Shell and Ruby installed. (Git Bash is free and easy)
+3. Run ArkaneOrkz.sh
 
 >>>>>>>>>>>>>
 R10. Design help documentation which includes a set of instructions which accurately describe how to use and install the application.
@@ -35,6 +41,8 @@ You must include:
 - any dependencies required by the application to operate
 - any system/hardware requirements
 >>>>>>>>>>>>
+
+---
 
 ## Scope
 
@@ -49,6 +57,8 @@ I'm developing Arkane Orkz as a way to get incorporate my passion for TTRPGs int
 The target audience of Arkane Orkz is described best as a niche of people who are willing to eschew triple-A games to play local system multiplayer text based games, my poor educators and my unwitting peers.
 
 The intended use for most users will be launch the game via the included bash script, which should automatically install the needed dependencies and launch the game to the main menu. From their, they will be able to navigate menus using the Up and Down keys, as well as provide input via the keyboard for certain things. 
+
+---
 
 ## Features
 
@@ -77,45 +87,47 @@ The intended use for most users will be launch the game via the included bash sc
     - If a character reaches an experience value that is a multiple of 5, they gain a level.
     - Level up includes the ability to choose from a list of improvements to your character and a boost to maximum hitpoints.
 
+---
+
 ## Control Flow
 
->>>>>>>>>>>>
-R8. Develop a diagram which describes the control flow of your application. Your diagram must:
-- show the workflow/logic and/or integration of the features in your application for each feature.
-- utilise a recognised format or set of conventions for a control flow diagram, such as UML.
->>>>>>>>>>>>>
+<img src="./docs/CharacterUML.png" alt="A UML diagram of the Character class">
+
+---
 
 ## Intended User Interaction
 
 Arkane Orkz is designed to have a main menu that the player is brought back to repeatedly, with feedback messages displayed above the menu. These feedback messages are tailored to the error and will often be enough to explain to a user if something they are doing is not working. 
 
 The main menu options are as follows:
-    1. Battle
-        - Clears menu, shows table of info and prompts user for input.
-        - Errors will return user to main menu with feedback referencing the particular error, including:
-            - No character loaded
-            - Character doesn't exist for the name user typed
-            - User tries to fight their own character
-        - If no errors, the battle occurs and is typed to screen.
-        - Message at the end of the fight informs user of win/loss and sleeps for 5 seconds.
-        - Then returns to main menu, with a colour coded feedback message explaining win/loss.
-    2. New Character
-        - Prompts user for name, built in error handling for blank names.
-        - User is shown statistics and is prompted with a menu to choose whether to keep them.
-        - User is then presented with a menu of weapons to choose from.
-        - User is returned to the main menu with a feedback message saying character created.
-    3. Save
-        - If there is no previous character of the current characters name, saves to file and returns to main menu.
-        - Otherwise prompts the user to choose whether to overwrite the old save. Yes overwrites that save and returns to main menu.
-        - No to overwriting prompts the user to rename their current character, which then saves under that name and returns to main menu.
-    4. Load
-        - User is shown a table listing all saved characters.
-        - User is prompted to input a character name.
-        - Error handling shows feedback messages for blank input and characters that don't exist.
-        - If the name provided matches a character, that character is loaded.
-    5. Exit
-        - Displays exit message and then exits program.
 
+1. Battle
+	- Clears menu, shows table of info and prompts user for input.
+	- Errors will return user to main menu with feedback referencing the particular error, including:
+		- No character loaded
+		- Character doesn't exist for the name user typed
+	- User tries to fight their own character
+	- If no errors, the battle occurs and is typed to screen.
+	- Message at the end of the fight informs user of win/loss and sleeps for 5 seconds.
+	- Then returns to main menu, with a colour coded feedback message explaining win/loss.
+2. New Character
+	- Prompts user for name, built in error handling for blank names.
+	- User is shown statistics and is prompted with a menu to choose whether to keep them.
+	- User is then presented with a menu of weapons to choose from.
+	- User is returned to the main menu with a feedback message saying character created.
+3. Save
+	- If there is no previous character of the current characters name, saves to file and returns to main menu.
+	- Otherwise prompts the user to choose whether to overwrite the old save. Yes overwrites that save and returns to main menu.
+	- No to overwriting prompts the user to rename their current character, which then saves under that name and returns to main menu.
+4. Load
+	- User is shown a table listing all saved characters.
+	- User is prompted to input a character name.
+	- Error handling shows feedback messages for blank input and characters that don't exist.
+	- If the name provided matches a character, that character is loaded.
+5. Exit
+	- Displays exit message and then exits program.
+
+---
 
 ## Implementation Plan
 ### Aka, Trello
@@ -126,6 +138,8 @@ Some pictures of it during the project:
 
 <img src="./docs/trello1.png" alt="A screenshot of a Trello page" width=70%>
 
+
 <img src="./docs/trello2.png" alt="A screenshot of a Trello page" width=70%>
+
 
 <img src="./docs/trello3.png" alt="A screenshot of a Trello page" width=70%>
