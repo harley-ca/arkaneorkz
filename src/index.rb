@@ -16,6 +16,7 @@ def main_menu
         menu.choice "New Ork"
         menu.choice "Save Ork"
         menu.choice "Load Ork"
+        menu.choice "READ ME"
         menu.choice "Exit"
     end
     return main_selection
@@ -41,6 +42,23 @@ def list_saves
     end
     table = Terminal::Table.new :rows => rows
     puts table
+end
+
+def read_me
+    system("clear")
+    puts "REEDIN!? Yoo shore, Choom?"
+    x = yesno
+    if x == "Yes"
+        system("clear")
+        readme = File.open("../README.md")
+        readme2 = readme.readlines.map(&:chomp)
+        puts readme2
+        breakline
+        puts "Press Enter to continue..."
+        gets
+        system("clear")
+        puts "I hope you gotz your reedin dunz, therez a fight happenin'"
+    end
 end
 
 def battle

@@ -23,6 +23,10 @@ The Arcane Ugly rulebook is available here: [link](https://miscastterrain.itch.i
 
 ## User Guide
 
+### Installation
+
+1. Run the 
+
 >>>>>>>>>>>>>
 R10. Design help documentation which includes a set of instructions which accurately describe how to use and install the application.
 
@@ -116,12 +120,12 @@ The main menu options are as follows:
 ## Implementation Plan
 ### Aka, Trello
 
->>>>>>>>>>>>
-R9. Develop an implementation plan which:
-- outlines how each feature will be implemented and a checklist of tasks for each feature
-- prioritise the implementation of different features, or checklist items within a feature
-- provide a deadline, duration or other time indicator for each feature or checklist/checklist-item
+You can find my Implementation Plan on Trello here: [link](https://trello.com/b/6LMZpCTt/t1a3-terminal-application)
 
-Utilise a suitable project management platform to track this implementation plan
-Your checklists for each feature should have at least 5 items.
->>>>>>>>>>>>>>>
+Some pictures of it during the project:
+
+<img src="./docs/trello1.png" alt="A screenshot of a Trello page" width=70%>
+
+<img src="./docs/trello2.png" alt="A screenshot of a Trello page" width=70%>
+
+<img src="./docs/trello3.png" alt="A screenshot of a Trello page" width=70%>
