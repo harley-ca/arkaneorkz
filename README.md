@@ -33,17 +33,6 @@ The Miscast Youtube Channel can be found here: [link](https://www.youtube.com/ch
 2. Ensure you have a Unix Shell and Ruby installed. (Git Bash is free and easy)
 3. Run ArkaneOrkz.sh
 
->>>>>>>>>>>>>
-R10. Design help documentation which includes a set of instructions which accurately describe how to use and install the application.
-
-You must include:
-- steps to install the application
-- any dependencies required by the application to operate
-- any system/hardware requirements
->>>>>>>>>>>>
-
----
-
 ## Scope
 
 Arkane Orks is intended to be a small local machine or network multiplayer game, to be player for entertainment.
