@@ -80,7 +80,6 @@ The intended use for most users will be launch the game via the included bash sc
 
 ## Control Flow
 
-<img src="./docs/CharacterUML.png" alt="A UML diagram of the Character class">
 
 ---
 
